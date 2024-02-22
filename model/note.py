@@ -10,4 +10,5 @@ class Note:
     text: str
 
     def __str__(self):
-        return f"'id': {self.id}, 'date_create': {self.date_create}, 'date_modify': {self.date_modify}, 'text': {self.text}"
+        return (f"'id': {self.id}, 'date_create': {self.date_create}, 'date_modify': {self.date_modify}, "
+                f"'text': {self.text}")

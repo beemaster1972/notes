@@ -5,5 +5,5 @@ from model.notes import Notes
 from controller.controller import Controller
 
 if __name__ == '__main__':
-    Controller().run()
+    Controller()
   

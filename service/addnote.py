@@ -1,16 +1,18 @@
-from model import notes
-from model import note
+from model.notes import Notes
+from model.note import Note
+from operation import Operation
 
 
-class AddNote(note, notes):
+class AddNote(Operation):
 
-    def __init__(self, notes_store: notes):
-        self.notes = notes_store
+    def __init__(self, notes: Notes):
+        self.notes = notes
 
-    def add_note(self, new_note: note) -> None:
+    def operation(self, note: Note) -> None:
         """
-
-        :param new_note:
-        :type new_note:
+        Метод добавления новой заметки
+        :param note: заметка
+        :type Note:
         """
-        pass
+        self.notes[note.date_create.date()] = self.notes.notes.get(note.date_create.date(), {}).update(
+            {note.id: note})

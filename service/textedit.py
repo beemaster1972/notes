@@ -1,15 +1,20 @@
 import curses
-import os
+from curses import wrapper
+
+
+class TextEdit:
+    def __init__(self):
+        self.screen = curses.initscr()
+
+    def __del__(self):
+        curses.endwin()
+
+    def textedit(self,init_text):
+
+
+
 
 
 if __name__ == '__main__':
-    print(os.getenv("TERM"))
-    screen = curses.initscr()
-    screen = curses.newwin(80,80)
-    if not screen:
-        print("ХУЙНЯ")
-    screen = curses.newwin(80, 80)
-    screen.addstr(0, 0, "(0,0")
-    screen.addstr(1, 1, "TEST")
-    while True:
-        screen.refresh()
+    text_edit = TextEdit()
+    curses.wrapper(text_edit.textedit)

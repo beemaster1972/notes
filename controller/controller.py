@@ -1,13 +1,57 @@
+from service.addnote import AddNote
+from service.deletenote import DeleteNote
+from service.editnote import EditNote
+from service.loadnotes import LoadNotes
+from service.nulloperation import NullOperation
+from service.savenotes import SaveNotes
 from view.viewer import *
-from service import *
+from model.notes import Notes
+import os
+
 
 class Controller:
+    __PROMPT = ['1. Создать заметку',
+                '2. Редактировать заметку',
+                '3. Удалить заметку',
+                '4. Показать заметки',
+                '5. Сохранить заметки в файл',
+                '6. Загрузить заметки из файла',
+                '0. Выход']
+    __MENU_COMMAND = {'1': 'add',
+                      '2': 'edit',
+                      '3': 'delete',
+                      '4': 'list',
+                      '5': 'save',
+                      '6': 'load',
+                      '0': 'exit'}
 
     def __init__(self):
-        self.viewer = Viewer()
+        self.notes = Notes(LoadNotes("notes.json").load())
+        self.viewer = Viewer(self.notes)
+        self.__operations = {'add': AddNote(self.notes), 'delete': DeleteNote(self.notes), 'edit': EditNote()}
 
     def __call__(self, *args, **kwargs):
         self.run(*args, **kwargs)
 
     def run(self, *args, **kwargs):
-        pass
+        command = ''
+        while (command != 'exit'):
+            print('\n'.join(self.__PROMPT))
+            command = self.__MENU_COMMAND.get(input("Ваш выбор: "), '_')
+            match (command):
+                case 'add' | 'edit' | 'delete':
+                    note = Note("Новая заметка", ['String1', 'String2', 'String3'])
+                    self.__operations.get(command, NullOperation()).operation(note)
+                case 'save':
+                    SaveNotes('notes.json').save(self.notes)
+                case 'list':
+                    for i, note in enumerate(self.viewer.view_notes_by_date_create()):
+                        print(i, note)
+
+                case 'exit':
+                    print('Всего хорошего! Приложение закрывается')
+                    print('Сохранение заметок...')
+                    SaveNotes('notes.json').save(self.notes)
+                    print('Всё удачно! До, свидания!')
+                case _:
+                    print("Не распознанная команда")

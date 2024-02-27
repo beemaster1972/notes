@@ -1,5 +1,5 @@
 from model.note import Note
-from service.operation import Operation
+from service.notesoperation import Operation
 
 
 class EditNote(Operation):

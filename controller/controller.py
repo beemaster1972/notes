@@ -40,14 +40,15 @@ class Controller:
             command = self.__MENU_COMMAND.get(input("Ваш выбор: "), '_')
             match (command):
                 case 'add' | 'edit' | 'delete':
-                    note = Note("Новая заметка", ['String1', 'String2', 'String3'])
+                    note = Note(title="Новая заметка", text=['String1', 'String2', 'String3'])
                     self.__operations.get(command, NullOperation()).operation(note)
                 case 'save':
                     SaveNotes('notes.json').save(self.notes)
                 case 'list':
-                    for i, note in enumerate(self.viewer.view_notes_by_date_create()):
-                        print(i, note)
-
+                    for date_notes, notes in self.viewer.view_notes().items():
+                        if type(notes) is dict:
+                            for id_note, note in notes.items():
+                                print(f'{date_notes} {note}')
                 case 'exit':
                     print('Всего хорошего! Приложение закрывается')
                     print('Сохранение заметок...')

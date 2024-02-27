@@ -1,17 +1,30 @@
 from datetime import datetime
-from uuid import uuid4, UUID
 
 
 class Note:
 
-    def __init__(self, title="", text=None):
-        self.__id = uuid4()
-        self.__date_create = datetime.now()
-        self._date_modify = datetime.now()
-        self._title = title
-        if text is None:
-            self._text = []
-        self._text = text
+
+    def __init__(self, **kwargs):
+
+        date_now = datetime.now()
+        self.__id = date_now.strftime('%H%M%S%f')
+        self.__date_create = date_now
+        self._date_modify = date_now
+        self._title = ""
+        self._text = []
+        for k, v in kwargs.items():
+            match k:
+                case 'id':
+                    self.__id = v
+                case 'date_create':
+                    self.__date_create = datetime.strptime(v, '%Y-%m-%d %H:%M:%S.%f')
+                case 'date_modify':
+                    self._date_modify = datetime.strptime(v, '%Y-%m-%d %H:%M:%S.%f')
+                case 'title':
+                    self._title = v
+                case 'text':
+                    self.text = v
+
 
     @property
     def id(self):
@@ -45,9 +58,16 @@ class Note:
     def text(self, value):
         self._text = value
 
+    def __call__(self, *args, **kwargs):
+        return {'id': self.__id,
+                'date_create': self.__date_create.strftime('%Y-%m-%d %H:%M:%S.%f'),
+                'date_modify': self._date_modify.strftime('%Y-%m-%d %H:%M:%S.%f'),
+                'title': self._title,
+                'text': self._text}
+
     def __setattr__(self, key, value):
 
-        if 'date' in key :
+        if 'date' in key:
             if not isinstance(value, datetime):
                 raise ValueError(f"Значение даты: {value}, не валидно")
         elif key == '_title':
@@ -64,8 +84,8 @@ class Note:
         return self.__dict__[item]
 
     def __str__(self):
-        return (f"'id': {self.id}, 'date_create': {self.date_create}, 'date_modify': {self.date_modify}, "
-                f"'title': {self.title}, 'text': {self.text}")
+        return (f"{{'id': {self.id}, 'date_create': {self.date_create}, 'date_modify': {self.date_modify}, "
+                f"'title': {self.title}, 'text': {self.text}}}")
 
     def __hash__(self):
         return hash(str(self.id) + str(self.date_create) + str(self.title))

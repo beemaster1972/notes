@@ -18,5 +18,9 @@ class SaveNotes:
             parameter = 'w+'
         else:
             parameter = 'w'
+        notes_for_serialized = {}
+        for date_notes, dict_notes in notes.notes.items():
+            save_dump = {k: v() for k, v in dict_notes.items()}
+            notes_for_serialized[date_notes] = save_dump
         with open(self.__file_name, parameter) as file:
-            json.dump(notes.notes, file, indent=4, skipkeys=True)
+            json.dump(notes_for_serialized, file, indent=4)

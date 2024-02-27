@@ -14,4 +14,4 @@ class AddNote(Operation):
         :param note: заметка
         :type Note:
         """
-        self.notes[note.date_create.date()] = note
+        self.notes[note.date_create.date().strftime('%Y-%m-%d')] = note

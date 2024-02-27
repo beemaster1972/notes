@@ -1,6 +1,6 @@
 from model.note import Note
 from model.notes import Notes
-from operation import Operation
+from service.notesoperation import Operation
 
 
 class DeleteNote(Operation):

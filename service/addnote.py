@@ -1,6 +1,6 @@
 from model.notes import Notes
 from model.note import Note
-from operation import Operation
+from service.notesoperation import Operation
 
 
 class AddNote(Operation):
@@ -14,5 +14,4 @@ class AddNote(Operation):
         :param note: заметка
         :type Note:
         """
-        self.notes[note.date_create.date()] = self.notes.notes.get(note.date_create.date(), {}).update(
-            {note.id: note})
+        self.notes[note.date_create.date()] = note

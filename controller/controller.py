@@ -4,6 +4,7 @@ from service.editnote import EditNote
 from service.loadnotes import LoadNotes
 from service.nulloperation import NullOperation
 from service.savenotes import SaveNotes
+from service.textedit import TextEdit
 from view.viewer import *
 from model.notes import Notes
 from curses import wrapper
@@ -31,7 +32,7 @@ class Controller:
         self.viewer = Viewer(self.notes)
         self.__operations = {'add': AddNote(self.notes),
                              'delete': DeleteNote(self.notes),
-                             'edit': EditNote()}
+                             'edit': EditNote(self.notes)}
 
     def __call__(self, *args, **kwargs):
         self.run(*args, **kwargs)
@@ -44,7 +45,7 @@ class Controller:
             match (command):
                 case 'add' | 'edit' | 'delete':
                     if command == 'add':
-                        note = Note(title="Новая заметка", text=['String1', 'String2', 'String3'])
+                        note = TextEdit().edit_note()
                     else:
                         note = self.viewer.get_note_with_command()
                     n, self.notes = self.__operations.get(command, NullOperation()).operation(note)

@@ -28,7 +28,9 @@ class Controller:
     def __init__(self):
         self.notes = Notes(LoadNotes("notes.json").load())
         self.viewer = Viewer(self.notes)
-        self.__operations = {'add': AddNote(self.notes), 'delete': DeleteNote(self.notes), 'edit': EditNote()}
+        self.__operations = {'add': AddNote(self.notes),
+                             'delete': DeleteNote(self.notes),
+                             'edit': EditNote()}
 
     def __call__(self, *args, **kwargs):
         self.run(*args, **kwargs)

@@ -56,15 +56,15 @@ class Note:
     def text(self, value):
         self._text = value
 
+    def get_title_of_note(self) -> str:
+        return str(self.date_create)+" "+self.id+" "+self.title
+
     def __call__(self, *args, **kwargs):
         return {'id': self.__id,
                 'date_create': self.__date_create.strftime('%Y-%m-%d %H:%M:%S.%f'),
                 'date_modify': self._date_modify.strftime('%Y-%m-%d %H:%M:%S.%f'),
                 'title': self._title,
                 'text': self._text}
-
-    def get_title_of_note(self) -> str:
-        return str(self.date_create)+" "+self.id+" "+self.title
 
     def __setattr__(self, key, value):
 

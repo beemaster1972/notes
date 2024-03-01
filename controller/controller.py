@@ -48,12 +48,15 @@ class Controller:
                         note = TextEdit().edit_note()
                     else:
                         note = self.viewer.get_note_with_command()
-                    n, self.notes = self.__operations.get(command, NullOperation()).operation(note)
-                    self.viewer.update_notes(self.notes)
+                    if note is not None:
+                        n, self.notes = self.__operations.get(command, NullOperation()).operation(note)
+                        self.viewer.update_notes(self.notes)
                 case 'save':
                     SaveNotes('notes.json').save(self.notes)
                 case 'list':
                     note = wrapper(self.viewer.get_note_with_command())
+                    if note is not None:
+                        self.viewer.display_note(note)
                 case 'exit':
                     print('Всего хорошего! Приложение закрывается')
                     print('Сохранение заметок...')

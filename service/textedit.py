@@ -14,16 +14,18 @@ class TextEdit:
             self.note = note
 
     def text_edit(self, stdscr: curses.window):
+        print(curses.LINES, curses.COLS)
         curses.noecho()
-        curses.curs_set(1)
-        curses.nocbreak()
+        curses.curs_set(2)
+        curses.cbreak()
         stdscr.keypad(1)
         stdscr.clear()
         stdscr.refresh()
+        stdscr.addstr(11, 0, "Ctrl+g to finish edit", curses.A_PROTECT + curses.A_REVERSE)
         win = curses.newwin(10, 80, 0, 0)
         win.addstr(0, 0, self.note.title, curses.A_REVERSE)
         for i, string in enumerate(self.note.text):
-            win.addstr(i, 0, string, curses.A_NORMAL)
+            win.addstr(i + 1, 0, string, curses.A_NORMAL)
         box = Textbox(win)
         box.edit()
         message = box.gather()
@@ -39,7 +41,6 @@ class TextEdit:
         self.note.title = text[0]
         self.note.text = text[1:]
         return self.note
-
 
 
 if __name__ == '__main__':

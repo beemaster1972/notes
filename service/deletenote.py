@@ -7,7 +7,7 @@ class DeleteNote(Operation):
     def __init__(self, notes: Notes):
         self.notes = notes
 
-    def operation(self, note: Note) -> Note:
+    def operation(self, note: Note) -> (Note, Notes):
         """
         Метод удаляющий заметку
         :param note: заметка для удаления
@@ -15,5 +15,6 @@ class DeleteNote(Operation):
         :return: удаленную заметку
         :rtype: Note
         """
-        notes_dict = self.notes[note.date_create.date()]
-        return notes_dict.popitem(note.id)
+        notes_dict = self.notes[str(note.date_create.date())]
+        print(len(notes_dict))
+        return notes_dict.pop(note.id, '_не существующая заметка_'), self.notes

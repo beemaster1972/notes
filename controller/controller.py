@@ -6,6 +6,7 @@ from service.nulloperation import NullOperation
 from service.savenotes import SaveNotes
 from view.viewer import *
 from model.notes import Notes
+from curses import wrapper
 import os
 
 
@@ -42,15 +43,16 @@ class Controller:
             command = self.__MENU_COMMAND.get(input("Ваш выбор: "), '_')
             match (command):
                 case 'add' | 'edit' | 'delete':
-                    note = Note(title="Новая заметка", text=['String1', 'String2', 'String3'])
-                    self.__operations.get(command, NullOperation()).operation(note)
+                    if command == 'add':
+                        note = Note(title="Новая заметка", text=['String1', 'String2', 'String3'])
+                    else:
+                        note = self.viewer.get_note_with_command()
+                    n, self.notes = self.__operations.get(command, NullOperation()).operation(note)
+                    self.viewer.update_notes(self.notes)
                 case 'save':
                     SaveNotes('notes.json').save(self.notes)
                 case 'list':
-                    for date_notes, notes in self.viewer.view_notes().items():
-                        if type(notes) is dict:
-                            for id_note, note in notes.items():
-                                print(f'{date_notes} {note}')
+                    note = wrapper(self.viewer.get_note_with_command())
                 case 'exit':
                     print('Всего хорошего! Приложение закрывается')
                     print('Сохранение заметок...')

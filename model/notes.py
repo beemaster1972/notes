@@ -12,7 +12,8 @@ class Notes:
                 temp = {}
                 for note_id, note in notes_dict.items():
                     temp[note_id] = Note(**note)
-                self.notes[date_notes] = temp
+                if len(temp):
+                    self.notes[date_notes] = temp
 
     def get_notes(self, filter_notes: any = None, condition: any = None):
         if filter_notes is None or condition is None:

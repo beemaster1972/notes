@@ -3,7 +3,6 @@ from datetime import datetime
 
 class Note:
 
-
     def __init__(self, **kwargs):
 
         date_now = datetime.now()
@@ -24,7 +23,6 @@ class Note:
                     self._title = v
                 case 'text':
                     self.text = v
-
 
     @property
     def id(self):
@@ -64,6 +62,9 @@ class Note:
                 'date_modify': self._date_modify.strftime('%Y-%m-%d %H:%M:%S.%f'),
                 'title': self._title,
                 'text': self._text}
+
+    def get_title_of_note(self) -> str:
+        return str(self.date_create)+" "+self.id+" "+self.title
 
     def __setattr__(self, key, value):
 

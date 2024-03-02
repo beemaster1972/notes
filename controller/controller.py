@@ -42,21 +42,25 @@ class Controller:
         while (command != 'exit'):
             print('\n'.join(self.__PROMPT))
             command = self.__MENU_COMMAND.get(input("Ваш выбор: "), '_')
+            cancel = False
             match (command):
                 case 'add' | 'edit' | 'delete':
                     if command == 'add':
                         note = TextEdit().edit_note()
                     else:
-                        note = self.viewer.get_note_with_command()
-                    if note is not None:
+                        cancel, note = wrapper(self.viewer.get_note_with_command)
+                    if not cancel:
                         n, self.notes = self.__operations.get(command, NullOperation()).operation(note)
                         self.viewer.update_notes(self.notes)
                 case 'save':
                     SaveNotes('notes.json').save(self.notes)
                 case 'list':
-                    note = wrapper(self.viewer.get_note_with_command())
-                    if note is not None:
+                    cancel, note = wrapper(self.viewer.get_note_with_command)
+                    if not cancel:
                         self.viewer.display_note(note)
+                case 'load':
+                    self.notes = Notes(LoadNotes('notes.json').load())
+                    self.viewer.update_notes(self.notes)
                 case 'exit':
                     print('Всего хорошего! Приложение закрывается')
                     print('Сохранение заметок...')

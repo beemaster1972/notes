@@ -3,8 +3,11 @@ from datetime import datetime
 
 class Note:
 
-    def __init__(self, **kwargs):
-
+    def __init__(self, *args, **kwargs):
+        if len(args) and args[0] is None:
+            self.isNote = False
+        else:
+            self.isNote = True
         date_now = datetime.now()
         self.__id = date_now.strftime('%H%M%S%f')
         self.__date_create = date_now
@@ -57,7 +60,7 @@ class Note:
         self._text = value
 
     def get_title_of_note(self) -> str:
-        return str(self.date_create)+" "+self.id+" "+self.title
+        return str(self.date_create) + " " + self.id + " " + self.title
 
     def __call__(self, *args, **kwargs):
         return {'id': self.__id,

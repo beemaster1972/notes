@@ -136,6 +136,7 @@ Intermediate control work on the specialization block. Lesson 1. Notes Applicati
 </tbody>
 </table>
 <br>
+
 ### Редактирование заметки
 
 !["Выбор заметки"](./img/04_notes.png)<br>
